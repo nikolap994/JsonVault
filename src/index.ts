@@ -1,13 +1,10 @@
-import JsonArchitect from "./json-class"
+import { JsonArchitect } from "./JsonArchitect";
 
-const architect = new JsonArchitect("myData.json"); 
-
-// Data to be written to JSON file
-const dataToWrite = {
-  name: "John Doe",
-  age: 30,
-  city: "New York",
-};
+export function initializeDatabase(
+  dbFileName: string,
+  initialData: any = {}
+): JsonArchitect {
+  return JsonArchitect.initialize(dbFileName, initialData);
+}
 
 
-architect.createJsonFile(dataToWrite);
