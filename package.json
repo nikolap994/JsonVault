@@ -1,12 +1,13 @@
 {
-  "name": "json-db",
+  "name": "json-architect",
   "version": "0.0.1",
   "description": "Tiny, lightweight, 0 dependency, easy-to-use JSON-based database",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "build": "tsup"
+    "build": "tsup",
+    "start": "ts-node src/index.ts"
   },
   "keywords": [
     "database",
@@ -19,9 +20,14 @@
   ],
   "author": "Nikola Pavlović",
   "license": "MIT",
-  "repository": "https://github.com/nikolap994/json-db",
+  "repository": "https://github.com/nikolap994/JsonArchitect",
   "devDependencies": {
+    "@types/node": "^20.12.8",
+    "ts-node": "^10.9.2",
     "tsup": "^8.0.2",
     "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "fs": "^0.0.1-security"
   }
 }
