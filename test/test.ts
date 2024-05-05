@@ -1,10 +1,16 @@
 import { JsonArchitect } from '../src/JsonArchitect';
 
 const dbFileName = './db.json';
-const initialData = { users: [], posts: [] };
+const initialData = { users: [{ name: 'Alice' }, { name: 'Bob' }], posts: [] };
 
-// Creating a new JsonArchitect instance will automatically initialize the database
-const dbEngine = new JsonArchitect(dbFileName, initialData);
+// Creating a new JsonArchitect instance will automatically initialize the database if necessary
+const db = new JsonArchitect(dbFileName, initialData);
 
-// Now you can directly use dbEngine to set data or perform other operations
-dbEngine.setData({ users: [{ id: 1, name: 'Alice' }] });
+const firstName = db.get('users.0.name');
+console.log('First user name:', firstName); // Output: "Alice"
+
+db.set('users.0.name', 'Jeff');
+console.log(db.get('users')); // Output: [{ name: 'Jeff' }, { name: 'Bob' }]
+
+db.set('posts', [{ title: 'First Post' }]);
+console.log(db.get('posts')); // Output: [{ title: 'First Post' }]
