@@ -1,10 +1,13 @@
-import { JsonArchitect } from "./JsonArchitect";
+import { JsonArchitect } from './JsonArchitect';
+import fs from 'fs';
 
-export function initializeDatabase(
-  dbFileName: string,
-  initialData: any = {}
-): JsonArchitect {
-  return JsonArchitect.initialize(dbFileName, initialData);
+export function initialize(dbFileName: string, initialData: any = {}): JsonArchitect | null {
+  if (fs.existsSync(dbFileName)) {
+    console.log(`Database file '${dbFileName}' already exists. Skipping initialization.`);
+    return null;
+  }
+
+  const engine = new JsonArchitect(dbFileName);
+  engine.createJsonFile(initialData);
+  return engine;
 }
-
-

@@ -1,6 +1,6 @@
-import { initializeDatabase } from '../src/index';
+import { initialize } from '../src/index';
 
 const dbFileName = './db.json';
 const initialData = { users: [], posts: [] };
 
-const dbEngine = initializeDatabase(dbFileName, initialData);
+const dbEngine = initialize(dbFileName, initialData);
