@@ -13,4 +13,6 @@ db.set('users.0.name', 'Jeff');
 console.log(db.get('users')); // Output: [{ name: 'Jeff' }, { name: 'Bob' }]
 
 db.set('posts', [{ title: 'First Post' }]);
-console.log(db.get('posts')); // Output: [{ title: 'First Post' }]
+console.log(db.get('users.0.name'));
+
+db.delete('users.0.name');

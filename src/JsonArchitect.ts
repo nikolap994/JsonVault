@@ -40,46 +40,133 @@ export class JsonArchitect {
         }
     }
 
-    get(propPath: string | number): any {
-        if (this.data === null) {
-            throw new Error(`Database not initialized. Use initializeDatabase to initialize.`);
+    private findNestedProperty(obj: any, props: string[]): any {
+        let current = obj;
+        for (const prop of props) {
+            if (current && typeof current === 'object' && prop in current) {
+                current = current[prop];
+            } else {
+                return null; // Property path does not exist
+            }
         }
+        return current;
+    }
 
-        const props = Array.isArray(propPath) ? propPath : String(propPath).split('.');
-        let current = this.data;
+    private setNestedProperty(obj: any, props: string[], value: any): void {
+        let current = obj;
+        const lastProp = props.pop(); // Remove last property to set
+
+        if (lastProp === undefined) {
+            throw new Error(`Invalid property path: ${props.join('.')}`);
+        }
 
         for (const prop of props) {
             if (current && typeof current === 'object' && prop in current) {
                 current = current[prop];
             } else {
-                const fullPath = Array.isArray(propPath) ? propPath.join('.') : String(propPath);
-                throw new Error(`Property '${prop}' not found in path '${fullPath}'`);
+                throw new Error(`Property '${prop}' not found in path '${props.join('.')}'`);
             }
         }
 
-        return current;
+        current[lastProp] = value;
+        this.writeData();
+        console.log(`Set property '${lastProp}' in path '${props.join('.')}' to '${value}'.`);
     }
 
-    set(propPath: string | number, value: any): void {
+    private deleteNestedProperty(obj: any, props: string[]): void {
+        const lastProp = props.pop(); // Remove last property to delete
+
+        if (lastProp === undefined) {
+            throw new Error(`Invalid property path: ${props.join('.')}`);
+        }
+
+        let current = obj;
+        for (const prop of props) {
+            if (current && typeof current === 'object' && prop in current) {
+                current = current[prop];
+            } else {
+                throw new Error(`Property '${prop}' not found in path '${props.join('.')}'`);
+            }
+        }
+
+        if (Array.isArray(current)) {
+            // Check if lastProp is a valid index and the array element is an object
+            const index = parseInt(lastProp);
+            if (!isNaN(index) && index >= 0 && index < current.length && typeof current[index] === 'object' && Object.keys(current[index]).length === 0) {
+                // Remove the empty object from the array
+                current.splice(index, 1);
+            }
+        } else if (current && typeof current === 'object' && lastProp in current) {
+            // Delete the property from the object
+            delete current[lastProp];
+        } else {
+            throw new Error(`Property '${lastProp}' not found in path '${props.join('.')}'`);
+        }
+
+        // Recursively check and clean up empty objects in arrays
+        this.cleanUpEmptyObjects(obj);
+
+        // Check if data object is empty after deletion
+        if (Object.keys(this.data).length === 0) {
+            this.data = {}; // Reset data to empty object
+            this.writeData();
+            console.log(`JSON data reset to empty object.`);
+        } else {
+            this.writeData();
+        }
+    }
+
+    private cleanUpEmptyObjects(obj: any): void {
+        if (Array.isArray(obj)) {
+            // Remove empty objects from arrays
+            for (let i = obj.length - 1; i >= 0; i--) {
+                if (typeof obj[i] === 'object' && Object.keys(obj[i]).length === 0) {
+                    obj.splice(i, 1);
+                }
+            }
+        } else if (typeof obj === 'object') {
+            // Recursively clean up empty objects in nested objects
+            for (const key in obj) {
+                if (typeof obj[key] === 'object') {
+                    this.cleanUpEmptyObjects(obj[key]);
+                }
+            }
+        }
+    }
+
+
+
+
+    get(propPath: string): any {
         if (this.data === null) {
             throw new Error(`Database not initialized. Use initializeDatabase to initialize.`);
         }
 
-        const props = Array.isArray(propPath) ? propPath : String(propPath).split('.');
-        let current = this.data;
+        const props = propPath.split('.');
+        const nestedProperty = this.findNestedProperty(this.data, props);
 
-        for (let i = 0; i < props.length - 1; i++) {
-            const prop = props[i];
-            if (current && typeof current === 'object' && prop in current) {
-                current = current[prop];
-            } else {
-                const fullPath = Array.isArray(propPath) ? propPath.join('.') : String(propPath);
-                throw new Error(`Property '${prop}' not found in path '${fullPath}'`);
-            }
+        if (nestedProperty === null) {
+            throw new Error(`Property '${propPath}' not found in data.`);
         }
 
-        const lastProp = props[props.length - 1];
-        current[lastProp] = value;
-        this.writeData();
+        return nestedProperty;
+    }
+
+    set(propPath: string, value: any): void {
+        if (this.data === null) {
+            throw new Error(`Database not initialized. Use initializeDatabase to initialize.`);
+        }
+
+        const props = propPath.split('.');
+        this.setNestedProperty(this.data, props, value);
+    }
+
+    delete(propPath: string): void {
+        if (this.data === null) {
+            throw new Error(`Database not initialized. Use initializeDatabase to initialize.`);
+        }
+
+        const props = propPath.split('.');
+        this.deleteNestedProperty(this.data, props);
     }
 }
