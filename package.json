@@ -1,6 +1,6 @@
 {
   "name": "jsonvault",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Tiny, lightweight, 0 dependency, easy-to-use JSON-based database",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
