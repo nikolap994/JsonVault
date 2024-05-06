@@ -1,1 +1,1 @@
-export { JsonArchitect } from './JsonArchitect';
+export { JsonVault } from './JsonVault';

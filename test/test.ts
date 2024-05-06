@@ -1,10 +1,10 @@
-import { JsonArchitect } from '../src/JsonArchitect';
+import { JsonVault } from '../src/JsonVault';
 
 const dbFileName = './db.json';
 const initialData = { users: [{ name: 'Alice' }, { name: 'Bob' }], posts: [] };
 
-// Creating a new JsonArchitect instance will automatically initialize the database if necessary
-const db = new JsonArchitect(dbFileName, initialData);
+// Creating a new JsonVault instance will automatically initialize the database if necessary
+const db = new JsonVault(dbFileName, initialData);
 
 const firstName = db.get('users.0.name');
 console.log('First user name:', firstName); // Output: "Alice"

@@ -1,6 +1,6 @@
 import fs from 'fs';
 
-export class JsonArchitect {
+export class JsonVault {
     private fileName: string;
     private data: any | null = null; // Use null to indicate uninitialized state
 

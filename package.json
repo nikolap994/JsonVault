@@ -1,5 +1,5 @@
 {
-  "name": "json-architect",
+  "name": "json-vault",
   "version": "0.0.1",
   "description": "Tiny, lightweight, 0 dependency, easy-to-use JSON-based database",
   "main": "./dist/index.js",
@@ -21,7 +21,7 @@
   ],
   "author": "Nikola Pavlović",
   "license": "MIT",
-  "repository": "https://github.com/nikolap994/JsonArchitect",
+  "repository": "https://github.com/nikolap994/JsonVault",
   "devDependencies": {
     "@types/node": "^20.12.8",
     "ts-node": "^10.9.2",
