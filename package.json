@@ -21,7 +21,10 @@
   ],
   "author": "Nikola Pavlović",
   "license": "MIT",
-  "repository": "https://github.com/nikolap994/JsonVault",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nikolap994/JsonVault.git"
+  },
   "devDependencies": {
     "@types/node": "^20.12.8",
     "ts-node": "^10.9.2",
@@ -30,5 +33,12 @@
   },
   "dependencies": {
     "fs": "^0.0.1-security"
+  },
+  "bugs": {
+    "url": "https://github.com/nikolap994/JsonVault/issues"
+  },
+  "homepage": "https://github.com/nikolap994/JsonVault#readme",
+  "directories": {
+    "test": "test"
   }
 }
