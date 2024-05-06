@@ -1,5 +1,5 @@
 {
-  "name": "json-vault",
+  "name": "jsonvault",
   "version": "0.0.1",
   "description": "Tiny, lightweight, 0 dependency, easy-to-use JSON-based database",
   "main": "./dist/index.js",
